@@ -8,16 +8,20 @@ import {deleteUser, editFavorite} from "../../redux/userSlice"
 import { getNameList, getFavoriteFilter, getFilterData } from "../../redux/selectors"
 
 const getFilteredUsersList = (users, statusFavoritesFilter, filterValue) => {
-    if(statusFavoritesFilter.status === "favorites" && (filterValue === "" || filterValue.length < 2)){
+    console.log("users: ",users, "statusFavoritesFilter: ",statusFavoritesFilter, "filterValue: ",filterValue)
+    if(statusFavoritesFilter === "favorites" && (filterValue === "" || filterValue.length < 2)){
             return users.filter(user => user.favorites === true);
         }    
-    if(statusFavoritesFilter.status === "favorites" && (filterValue !== "" || filterValue.length > 1)){
+    if(statusFavoritesFilter === "favorites" && (filterValue !== "" || filterValue.length > 1)){
             return users.filter(user => user.favorites === true && user.name.toLowerCase().includes(filterValue.toLowerCase()));
         }
-    if(statusFavoritesFilter.status !== "favorites" && (filterValue !== "" || filterValue.length > 1)){
+    if(statusFavoritesFilter !== "favorites" && (filterValue !== "" || filterValue.length > 1)){
             return users.filter(user => user.name.toLowerCase().includes(filterValue.toLowerCase()));
         }
-        return users; //default => (!favorites && filterValue === "" || filterValue.length < 2)
+    if(filterValue === "" || filterValue.length < 2) {
+        return users;
+    }
+    return users;
 }
 
 export const ContactList = () => {
