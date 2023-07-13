@@ -5,10 +5,10 @@ import React from "react";
 import {ListElement, ListItem, Button, BtnWrapper} from "./ContactList.styled.jsx"
 import {useDispatch, useSelector} from "react-redux";
 import {deleteUser, editFavorite} from "../../redux/userSlice"
-import { getNameList, getFavoriteFilter, getFilterData } from "../../redux/selectors"
+import { getFavoriteFilter, getFilterData } from "../../redux/selectors"
+import { useGetUsersQuery } from "../../redux/userSlice";
 
 const getFilteredUsersList = (users, statusFavoritesFilter, filterValue) => {
-    console.log("users: ",users, "statusFavoritesFilter: ",statusFavoritesFilter, "filterValue: ",filterValue)
     if(statusFavoritesFilter === "favorites" && (filterValue === "" || filterValue.length < 2)){
             return users.filter(user => user.favorites === true);
         }    
@@ -25,13 +25,17 @@ const getFilteredUsersList = (users, statusFavoritesFilter, filterValue) => {
 }
 
 export const ContactList = () => {
+
+const { data, isLoading } = useGetUsersQuery();
+
 const dispatch = useDispatch();
-const namesList = useSelector(getNameList);
+const namesList = data;
 const statusFilter = useSelector(getFavoriteFilter);
 const filterValue = useSelector (getFilterData);
 const filteredUsers = getFilteredUsersList(namesList, statusFilter, filterValue);
-
     return (
+    <>
+        { isLoading? (<b>Loading...</b>):(
         <ListElement>
             {filteredUsers.map( contact => (
                 <ListItem key={contact.id}>
@@ -43,7 +47,8 @@ const filteredUsers = getFilteredUsersList(namesList, statusFilter, filterValue)
                     </BtnWrapper>
                 </ListItem>
             ))}
-        </ListElement>
+        </ListElement>)}
+    </>
     )
 }
 ContactList.propTypes = {

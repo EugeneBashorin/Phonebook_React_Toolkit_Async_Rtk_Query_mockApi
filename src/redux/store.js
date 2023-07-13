@@ -1,32 +1,16 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { userReducer } from "./userSlice";
 import { favoriteFilterReducer } from "./favoriteFilterSlice";
 import { userFilterReducer } from "./userFilterSlice";
-import storage from "redux-persist/lib/storage";
-import {persistReducer, persistStore} from "redux-persist";
-import thunk from "redux-thunk";
-
-const persistConfig = {
-    key: 'root',
-    storage,
-}
+import { usersApi } from "./userSlice";
 
 const rootReducer = combineReducers({
-    user: userReducer,
+    // user
+    [usersApi.reducerPath]: usersApi.reducer,   
     favoriteFilter: favoriteFilterReducer,
     userFilter: userFilterReducer,
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducer) 
-
 export const store = configureStore({
-    reducer: persistedReducer,
-    // reducer: {
-    //     user: userReducer,
-    //     favoriteFilter: favoriteFilterReducer,
-    //     userFilter: userFilterReducer,
-    // }
-    middleware: [thunk]
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(usersApi.middleware),
 });
-
-export const persistor = persistStore(store);

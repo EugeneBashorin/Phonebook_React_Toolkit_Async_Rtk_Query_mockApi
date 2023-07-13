@@ -1,12 +1,21 @@
 import {createSlice} from "@reduxjs/toolkit";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { nanoid } from "nanoid";
 
-const userInitialState = [
-    {id: "QYlW1HCd4ijnSzwFCsl4v", name: "lkj", phoneNumber: "546854", favorites: false},
-    {id: "9yOvUkyS2yOJLd04137WG", name: "Goran Puller", phoneNumber: "87954665", favorites: false},
-    {id: "T-GBRIXc_ysRhJk2M69P5", name: "Gobi Desert", phoneNumber: "3216546", favorites: true},
-    {id: "441JnrwC836flcGskZMp5", name: "Eugene", phoneNumber: "5466546213654", favorites: false},
-    ];
+export const usersApi = createApi({
+    reducerPath: 'userApi',
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://64a03db3ed3c41bdd7a720ce.mockapi.io' }),
+    endpoints: (builder) => ({
+      getUsers: builder.query({
+        query: () => `/contacts`,
+      }),
+
+    }),
+  });
+
+export const { useGetUsersQuery } = usersApi;
+
+const userInitialState = [];
 
 const userSlice = createSlice(
     {
