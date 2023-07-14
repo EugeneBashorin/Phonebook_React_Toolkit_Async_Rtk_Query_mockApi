@@ -26,7 +26,7 @@ const getFilteredUsersList = (users, statusFavoritesFilter, filterValue) => {
 
 export const ContactList = () => {
 
-const { data, isLoading } = useGetUsersQuery();
+const { data, error, isLoading } = useGetUsersQuery();
 
 const dispatch = useDispatch();
 const namesList = data;
@@ -35,7 +35,8 @@ const filterValue = useSelector (getFilterData);
 const filteredUsers = getFilteredUsersList(namesList, statusFilter, filterValue);
     return (
     <>
-        { isLoading? (<b>Loading...</b>):(
+
+    {isLoading? (<b>Loading...</b>):(
         <ListElement>
             {filteredUsers.map( contact => (
                 <ListItem key={contact.id}>

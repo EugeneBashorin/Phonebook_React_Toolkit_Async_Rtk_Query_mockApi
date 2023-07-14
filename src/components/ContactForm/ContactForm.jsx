@@ -4,8 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import React from "react";
 import {LabelEl, LabelElFavorite, Button} from "./ContactForm.styled.jsx"
 import * as Yup from 'yup';
-import {useDispatch} from "react-redux";
-import {addUser} from "../../redux/userSlice";
+import { useAddUsersMutation } from "../../redux/userSlice";
 
 const Input = styled(Field)`
     width: 150px;
@@ -40,9 +39,13 @@ const initialValues = {
 }
 
 export const ContactForm = () => { 
-    const dispatch = useDispatch();
+    const [addUsers, relultFetchInfo] = useAddUsersMutation();
     const handleSubmit = (values, action) => {
-        dispatch(addUser(values));
+        try {
+         addUsers(values);
+        } catch (error) {
+            console.log(error);
+        }
         action.resetForm();
     }
     return(
