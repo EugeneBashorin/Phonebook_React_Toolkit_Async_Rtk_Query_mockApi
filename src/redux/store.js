@@ -4,8 +4,7 @@ import { userFilterReducer } from "./userFilterSlice";
 import { usersApi } from "./userSlice";
 
 const rootReducer = combineReducers({
-    // user
-    [usersApi.reducerPath]: usersApi.reducer,   
+    [usersApi.reducerPath]: usersApi.reducer,       // user reducer
     favoriteFilter: favoriteFilterReducer,
     userFilter: userFilterReducer,
 });
